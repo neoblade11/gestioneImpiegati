@@ -8,16 +8,16 @@ package com.jds.architecture.utilities;
 
 /**
  * Validation strategy object used to determine if the given argument translates
- * to a string containing letters or digits or any valid characters as specified 
- * by the constructor.  The method uses the argument object's toString() method to
- * obtain a string representation.
+ * to a string containing letters or digits or any valid characters as specified
+ * by the constructor. The method uses the argument object's toString() method
+ * to obtain a string representation.
  * 
  * The inherited method <code>validate(Object target)</code> accepts an object
- * to be validated.  Exceptions will be thrown when any other argument is passed 
+ * to be validated. Exceptions will be thrown when any other argument is passed
  * to the method.
  * 
- * Classes that implement the <code>ValidationStrategy</code> interface should be 
- * passed to <code>Validator</code> objects via their constructor or to the 
+ * Classes that implement the <code>ValidationStrategy</code> interface should
+ * be passed to <code>Validator</code> objects via their constructor or to the
  * <code>Validator.validate(ValidationStrategy, Object)</code> method
  * 
  * @author Eugene P. Lozada, Arthur D. Gerona
@@ -25,54 +25,54 @@ package com.jds.architecture.utilities;
  * @see ValidationStrategy
  * 
  */
-public class StringIsValid implements ValidationStrategy{
-    ;
-	String specialChars="";
-	
-	
+public class StringIsValid implements ValidationStrategy {
+	;
+	String specialChars = "";
+
 	/**
-	 * Creates a new string validation strategy object and specifies 
-	 * additional characters to be considered as valid
+	 * Creates a new string validation strategy object and specifies additional
+	 * characters to be considered as valid
 	 * 
 	 * @param specialChars String containing characters considered as valid.
 	 */
-	public StringIsValid(String specialChars){
-		this.specialChars= specialChars;
+	public StringIsValid(String specialChars) {
+		this.specialChars = specialChars;
 	}
 
-	/** 
+	/**
 	 * 
 	 * Determines if the object argument contains only validat letters and digits
 	 * 
 	 * @param target object argument to be valdiated
-	 * @return true if the object argument's string representation only contains 
-	 * qualified  Unicode letters and digits , returns false otherwise.
+	 * @return true if the object argument's string representation only contains
+	 *         qualified Unicode letters and digits , returns false otherwise.
 	 * 
 	 */
 	public boolean validate(Object target) {
-		
+
 		String targetStr = target.toString();
 		int targetLen = targetStr.length();
 		char[] charArray = targetStr.toCharArray();
-		
 
-		for(int i = 0; i < targetLen; i++){
-			if(Character.isLetterOrDigit(charArray[i]) || specialCharIsOK(charArray[i])){
-			   	continue;
-			}
-			else{
+		for (int i = 0; i < targetLen; i++) {
+			if (Character.isLetterOrDigit(charArray[i]) || specialCharIsOK(charArray[i])) {
+				continue;
+			} else {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	private boolean specialCharIsOK(char c){
-		
-		
+
+	private boolean specialCharIsOK(char c) {
+		char[] array = specialChars.toCharArray();
+		System.out.println(array);
+		for(int i=0;i<array.length;i++)
+			if(array[i]==c)
+				return true;
 		return false;
+
 	}
-	
-	
+
 }

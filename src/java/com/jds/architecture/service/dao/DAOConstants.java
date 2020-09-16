@@ -246,5 +246,7 @@ public class DAOConstants {
 	public static String NEXT_SQN_EMPLOYEE = "SELECT seq_employee.nextval FROM DUAL";
 	public static String NEXT_SQN_SKILLS = "SELECT seq_skills.nextval FROM DUAL";
 	public static String NEXT_SQN_SKILLCATEGORY = "SELECT seq_skillcategory.nextval FROM DUAL";
+	
+	
 
 }

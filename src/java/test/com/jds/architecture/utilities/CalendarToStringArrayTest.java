@@ -47,7 +47,6 @@ public class CalendarToStringArrayTest extends TestCase {
 	public void testcalendarToStringArray() {
 		CalendarToStringArray calendarToString = 
 			new CalendarToStringArray();
-		
 		if(!( className.equals(calendarToString.getClass().toString()) ))
 			fail("incorrect instance");
 	}

@@ -2,7 +2,12 @@
  * Created on Feb 3, 2005
  */
 package com.jds.architecture.utilities;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
+
+import java.text.DateFormat;
 /**
  * Transform strategy object used to transform a <code>Calendar</code> instance
  * into an array of strings. This class uses the <code>java.text.DateFormat</code>
@@ -25,8 +30,11 @@ package com.jds.architecture.utilities;
 
 
 public class CalendarToStringArray implements TransformStrategy{
-
-
+	
+	Date data;
+	DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM,Locale.US);
+	
+	
 	/**
 	 * Constructs a new strategy object using the specified format for its transform rule.
 	 * 
@@ -40,14 +48,15 @@ public class CalendarToStringArray implements TransformStrategy{
 		calendarStr = df.format(new Date());
 		
 	}*/
-	
 	// NOTE: modified javadoc - for verification
 	/**
 	 * Constructs a new strategy object using the default format DateFormat.MEDIUM for its 
 	 * transform rule.
 	 */
 	public CalendarToStringArray(){
-	
+		//arrayString = new String[10];
+		//System.out.println(df);
+		//df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
 		
 	}
 	
@@ -58,10 +67,26 @@ public class CalendarToStringArray implements TransformStrategy{
 	 * @return array of strings representing the Calendar
 	 */
 	public Object transform(Object target) {
-	
-   
-		
-		return null;	
+		String[] arrayString = new String[4];
+		//System.out.println(target);
+		df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
+		try {//Gestisce il calendario
+				//arrayString[0] = df.format(String.valueOf((Calendar) target));
+				//arrayString[1] = df.format((Calendar) target);
+				//System.out.println(arrayString[0]);
+				arrayString[1] = String.valueOf(((Calendar) target).get(Calendar.YEAR));
+				System.out.println(arrayString[1]);
+				//arrayString[2] = df.format(((Calendar) target).get(Calendar.YEAR));
+				arrayString[2] = String.valueOf(((Calendar) target).get(Calendar.MONTH));
+				//arrayString[3] = df.format(((Calendar) target).get(Calendar.MONTH)+1);
+				System.out.println(arrayString[2]);
+				arrayString[3] = String.valueOf(((Calendar) target).get(Calendar.DAY_OF_MONTH));
+				//arrayString[4] = df.format(((Calendar) target).get(Calendar.DAY_OF_MONTH));
+				System.out.println(arrayString[3]);
+		}catch(RuntimeException exc) {
+			throw new ClassCastException("Il bersaglio deve essere un Calendar");
+		}
+		return arrayString;	
 	}
 	
 }

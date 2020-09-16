@@ -34,9 +34,13 @@ public class StringIsAlphaNumeric implements ValidationStrategy{
 	 * 
 	 */
 	public boolean validate(Object target) {
-	
-	
-		return false;
+		char[] charArray = target.toString().toCharArray();
 		
+		for(int i = 0 ; i < charArray.length; i++) {
+			if(!Character.isLetterOrDigit(charArray[i]))	
+				return false;
+		}
+		return true;
 	}
 }
+

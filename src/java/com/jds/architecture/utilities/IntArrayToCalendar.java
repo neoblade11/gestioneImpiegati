@@ -3,6 +3,8 @@
  */
 package com.jds.architecture.utilities;
 
+import java.util.Calendar;
+
 /**
  * Transform strategy object used to transform an array of integers into a
  * Calendar object The Calendar used will use the locale as specified by a
@@ -33,10 +35,14 @@ public class IntArrayToCalendar implements TransformStrategy {
 	 * @return Calendar object equivalent of the argument
 	 */
 	public Object transform(Object target) {
-		// TODO Auto-generated method stub
+		Calendar res = Calendar.getInstance();
 
-		return null;
+		int[] objects = (int[]) target;
+		res.set(objects[0], objects[1] - 1, objects[2]);
+
+		return res;
 
 	}
 
 }
+

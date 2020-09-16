@@ -45,3 +45,4 @@ public class StringIsAlpha implements  ValidationStrategy {
 	}
 
 }
+

@@ -6,6 +6,8 @@
  */
 package com.jds.architecture.utilities;
 
+import java.util.Calendar;
+
 /**
  * Transform strategy object used to transform an array of 3 objects into an equivalent
  * instance of a Calendar.  Contents of the object array are translated to strings using their
@@ -37,9 +39,13 @@ public class StringArrayToCalendar implements  TransformStrategy {
 	 * @return instance of a Calendar based on the argument array.
 	 */
 	public Object transform(Object target) {
-	
-        
-		return null;
+		Calendar res = Calendar.getInstance();
+
+		String[] objects = (String[]) target;
+		res.set(Integer.parseInt(objects[0]), Integer.parseInt(objects[1]) - 1, Integer.parseInt(objects[2]));
+
+		return res;
 	}
 
 }
+

@@ -22,7 +22,7 @@ package com.jds.architecture.utilities;
  */
 public class StringLengthIsValid implements ValidationStrategy{
 
-	//private int maxLength;
+	private int maxLength;
 	
 	
 	/**
@@ -32,7 +32,7 @@ public class StringLengthIsValid implements ValidationStrategy{
 	 * @param maxLength maximum length used for comparison
 	 */
 	public StringLengthIsValid(int maxLength){
-		//this.maxLength = maxLength;
+		this.maxLength = maxLength;
 	}
 	
 	
@@ -47,8 +47,18 @@ public class StringLengthIsValid implements ValidationStrategy{
 	 * 
 	 */
 	public boolean validate(Object target) {
-		
-		return false;
+		if(maxLength<0) {
+			return true;
+		}
+		if(target instanceof String) {
+			if(((String) target).length()<=maxLength) {
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			throw new NullPointerException();
+		}
 		
 	}
 

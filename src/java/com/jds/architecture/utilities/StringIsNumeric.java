@@ -24,11 +24,10 @@ package com.jds.architecture.utilities;
  * 
  */
 public class StringIsNumeric implements ValidationStrategy {
-
-	//private String specialChars;
+	private String specialChars;
 	
 	public StringIsNumeric() {
-		//this.specialChars = "";
+		this.specialChars = "";
 	}
 	
 	/**
@@ -38,7 +37,7 @@ public class StringIsNumeric implements ValidationStrategy {
 	 * @param specialChars String containing characters considered as valid.
 	 */
 	public StringIsNumeric(String specialChars){
-		//this.specialChars = specialChars;
+		this.specialChars = specialChars;
 	}
 	
 	/** 
@@ -51,14 +50,39 @@ public class StringIsNumeric implements ValidationStrategy {
 	 */
 	public boolean validate(Object target) {
 		//char[] charArray = target.toString().toCharArray();
-		
-
-
+		//if (target == null)
+		//	throw new NullPointerException();
+		//if (target instanceof String) {
+		//	try {
+		//		Integer.parseInt((String) target);
+		//		Long.parseLong((String) target);
+		//	}catch(NumberFormatException exc) {
+		//		return false;
+		//	}
+		//	return true;
+		//}
+		//return false;
+		//############################################
+		String targetStr = target.toString();
+		int targetLen = targetStr.length();
+		char[] charArray = targetStr.toCharArray();
+		for (int i = 0; i < targetLen; i++) {
+			if (Character.isDigit(charArray[i]) || specialCharIsOK(charArray[i])) {
+				continue;
+			}else {
+				return false;
+			}
+		}
 		return true;
 	}
 
 	private boolean specialCharIsOK(char c){
-		
+		//DA testare
+		char[] array = specialChars.toCharArray();
+		System.out.println(array);
+		for(int i=0;i<array.length;i++)
+			if(array[i]==c)
+				return true;
 		return false;
 	}
 	

@@ -33,7 +33,17 @@ public class ClassTypeIsSame implements ValidationStrategy {
 	 */
 	public boolean validate(Object target) {
 		
-		//Get arguments array
+		Object[] objects = (Object[]) target;
+		if(objects[0] == null && objects[1] == null)
+			return true;
+		else if((objects[0] == null && objects[1] != null) || (objects[0] != null && objects[1] == null))
+			return false;
+		try {
+			if(objects[0].getClass()==objects[1].getClass())
+				return true;
+		} catch (RuntimeException exc) {
+			throw new ClassCastException();
+		}
 		
 		
 		return false;
