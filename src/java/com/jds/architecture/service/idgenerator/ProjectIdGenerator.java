@@ -45,6 +45,4 @@ public class ProjectIdGenerator implements IdGeneratorInterface{
 		}
 		return id;
 	}
-
-	
 }
