@@ -33,7 +33,7 @@ public class SkillDAO extends DAOConstants implements DataAccessObjectInterface 
 				ps.setString(3, ((SkillsInformation) obj).getName());
 				ps.setString(4, ((SkillsInformation) obj).getDescription());
 				ps.setString(5, ((SkillsInformation) obj).getStatus());
-				ps.execute();
+				ps.execute();			
 			} catch (SQLException e) {
 				throw new DAOException("sql.create.exception.skilldao", e);
 			} catch (Exception e) {
