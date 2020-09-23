@@ -2,120 +2,147 @@ package com.jds.architecture.service.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
+import javax.sql.RowSet;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
 
 import com.jds.apps.beans.SkillsInformation;
-import com.jds.architecture.service.dao.DAOConstants;
-import com.jds.architecture.service.dao.stmtgenerator.StatementGenSkills;
+import com.jds.architecture.Logger;
+import com.jds.architecture.service.dbaccess.DBAccess;
+import com.jds.architecture.service.dbaccess.DBAccessException;
 
-public class SkillDAO extends DAOConstants{
-	
-	public static SkillDAO getFactory() throws DAOException{
-		return new SkillDAO();
+public class SkillDAO extends DAOConstants implements DataAccessObjectInterface {
+
+	DBAccess dbAcces;
+	Logger log;
+
+	protected SkillDAO() throws DBAccessException {
+		dbAcces = DBAccess.getDBAccess();
 	}
-	
-	private CachedRowSet rowSet;
-	
-	private SkillDAO() throws DAOException{
-		try {
-			rowSet = RowSetProvider.newFactory().createCachedRowSet();
-		}catch(SQLException sql) {
-			throw new DAOException("Messaggio", sql);
-		}
-	}
-	
-	
-	public void create(Connection conn,SkillsInformation entity,StatementGenSkills skill) throws DAOException{
-		try {
-			rowSet.setCommand(SKILL_FIND_ALL);
-			rowSet.execute(conn);
-			rowSet.moveToInsertRow();
-			//rowSet.updateString(1, skill.);
-			System.out.println("Problema");
-			rowSet.updateString(1, entity.getSkillId());
-			rowSet.updateString(2,entity.getCategoryId());
-			rowSet.updateString(3,entity.getSkillName());
-			rowSet.updateString(4,entity.getSkillDescription());
-			rowSet.updateString(5, entity.getStatus());
-			rowSet.moveToInsertRow();
-			rowSet.acceptChanges();
-			//conn.commit();
-		}catch(SQLException sql) {
-			throw new DAOException("Errore",sql);
-		}
-	}
-	
-	public void update(Connection conn,SkillsInformation entity) throws DAOException{
-		try {
-			PreparedStatement ps = conn.prepareStatement(SKILL_UPDATE_MAIN );
-			ps.setString(1, entity.getCategoryId());
-			ps.setString(2, entity.getSkillName());
-			ps.setString(3, entity.getSkillDescription());
-			ps.setString(4, entity.getStatus());
-			ps.execute();
-			conn.commit();
-		}catch(SQLException sql) {
-			throw new DAOException("Errore",sql);
-		}
-	}
-	
-	public void delete(Connection conn,String id) throws DAOException {
-		PreparedStatement ps;
-		try {
-			ps = conn.prepareStatement(SKILL_DELETE);
-			ps.setString(1, id);
-			ps.execute();
-			conn.commit();
-		}catch(SQLException sql) {
-			throw new DAOException("Errore",sql);
-		}
-	}
-	
-	public SkillsInformation[] getAll(Connection conn) throws DAOException{
-		SkillsInformation[] skills = null;
-		try {
-			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			ResultSet rs = stmt.executeQuery(SKILL_FIND_ALL);
-			rs.last();
-			skills = new SkillsInformation[rs.getRow()];
-			for(int i=0; rs.next();i++) {
-				SkillsInformation skill = new SkillsInformation();
-				skill.setSkillId(rs.getString(1));
-				skill.setCategoryId(rs.getString(2));
-				skill.setCategoryName(rs.getString(3));
-				skill.setStatus(rs.getString(4));
-				skills[i] = skill;
-			}
-			rs.close();
-		}catch(SQLException sql) {
-			throw new DAOException("ERRORE",sql);
-		}
-		return skills;
-	}
-	
-	public SkillsInformation getById(Connection conn,String id) throws DAOException{
-		SkillsInformation skill = null;
-		try {
+
+	@Override
+	public void create(Connection conn, Object obj) throws DAOException {
+		if (obj instanceof SkillsInformation) {
 			PreparedStatement ps;
-			ps = conn.prepareStatement(SKILL_FIND_BYPK);
-			ps.setString(1,id);
-			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				skill = new SkillsInformation();
-				skill.setSkillId(rs.getString(1));
-				skill.setCategoryId(rs.getString(2));
-				skill.setCategoryName(rs.getString(3));
-				skill.setStatus(rs.getString(4));
+			try {
+				ps = conn.prepareStatement(SKILL_CREATE);
+				ps.setString(1, ((SkillsInformation) obj).getId());
+				ps.setString(2, ((SkillsInformation) obj).getCategoryId());
+				ps.setString(3, ((SkillsInformation) obj).getName());
+				ps.setString(4, ((SkillsInformation) obj).getDescription());
+				ps.setString(5, ((SkillsInformation) obj).getStatus());
+				ps.execute();
+			} catch (SQLException e) {
+				throw new DAOException("sql.create.exception.skilldao", e);
+			} catch (Exception e) {
+				throw new DAOException("create.exception.skilldao", e);
 			}
-		}catch(SQLException sql) {
-			throw new DAOException("ERRORE",sql);
+		} else {
+			throw new DAOException("invalid.object.skilldao", null);
 		}
-		return skill;
 	}
-	
+
+	@Override
+	public boolean remove(Connection conn, Object obj) throws DAOException { // DA RIVEDERE
+		if (obj instanceof String && obj != null) {
+			PreparedStatement ps;
+			try {
+				ps = conn.prepareStatement(SKILL_DELETE);
+				ps.setString(1, ((SkillsInformation) obj).getId());
+				if (ps.execute() == false)// questo
+					return true;
+				else
+					return false;
+			} catch (SQLException e) {
+				throw new DAOException("sql.remove.exception.skilldao", e);
+			}
+		}
+
+		else
+			throw new DAOException("invalid.object.skilldao", null);
+
+	}
+
+	@Override
+	public Object findByPK(Object obj) throws DAOException {
+		if (obj instanceof String && obj != null) {
+			try {
+				CachedRowSet rs = RowSetProvider.newFactory().createCachedRowSet();
+				Connection conn;
+				conn = dbAcces.getConnection();
+				PreparedStatement ps = conn.prepareStatement(SKILL_FIND_BYPK);
+				ps.setString(1, ((String) obj));
+				rs = (CachedRowSet) ps.executeQuery();
+				conn.close();
+				return rs;
+			} catch (DBAccessException e) {
+				throw new DAOException("cause message key", e);
+			} catch (SQLException e) {
+				throw new DAOException("sql.findpk.exception.skilldao", e);
+			}
+		} else {
+			throw new DAOException("invalid.object.skilldao", null);
+		}
+	}
+
+	@Override
+	public RowSet findByAll() throws DAOException {
+		Connection conn;
+		try {
+			CachedRowSet rs = RowSetProvider.newFactory().createCachedRowSet();
+			conn = dbAcces.getConnection();
+			PreparedStatement ps = conn.prepareStatement(SKILL_FIND_ALL);
+			rs = (CachedRowSet) ps.executeQuery();
+			conn.close();
+			return rs;
+		} catch (DBAccessException e) {
+			throw new DAOException("cause message key", e);
+		} catch (SQLException e) {
+			throw new DAOException("sql.findall.exception.skilldao", e);
+		}
+	}
+
+	@Override
+	public RowSet find(Object obj) throws DAOException {// DA RIVEDERE
+		if (obj instanceof SkillsInformation) {
+			try {// non è corretto
+				RowSet rs;
+				Connection conn;
+				conn = dbAcces.getConnection();
+				PreparedStatement ps = conn.prepareStatement(SKILL_FIND_BYPK);
+				ps.setString(1, ((SkillsInformation) obj).getId());
+				ps.execute();
+
+				conn.close();
+				return null;
+			} catch (DBAccessException e) {
+				throw new DAOException("cause message key", e);
+			} catch (SQLException e) {
+				throw new DAOException("sql.find.exception.skilldao", e);
+			}
+		} else {
+			throw new DAOException("invalid.object.skilldao", null);
+		}
+
+	}
+
+	@Override
+	public boolean update(Connection conn, Object obj1, Object obj2) throws DAOException {// DA FARE
+		if (obj1 != null && obj2 != null && conn != null && obj1 instanceof SkillsInformation
+				&& obj2 instanceof SkillsInformation) {
+			try {
+				PreparedStatement ps = conn.prepareStatement(SKILL_UPDATE_MAIN);
+				ps.setString(1, "id = " + ((SkillsInformation) obj1).getId() + ",catId = ");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return false;
+		} else
+			throw new DAOException("invalid.object.skilldao", null);
+
+	}
+
 }
