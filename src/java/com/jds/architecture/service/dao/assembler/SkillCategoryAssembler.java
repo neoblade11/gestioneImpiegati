@@ -28,7 +28,7 @@ public class SkillCategoryAssembler {
 		return skillsCtReturn;
 	}
 	
-	public static SkillCategoryAssembler getInfo(RowSet rs) throws SQLException {
+	public static SkillCategory getInfo(RowSet rs) throws SQLException {
 		SkillCategory skillsCtReturn = new SkillCategory();
 		skillsCtReturn.setCategoryId(rs.getString("id"));
 		skillsCtReturn.setCategoryName(rs.getString("name"));
