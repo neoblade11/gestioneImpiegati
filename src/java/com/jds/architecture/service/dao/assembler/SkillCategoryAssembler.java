@@ -5,9 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.RowSet;
-import com.jds.apps.beans.SkillCategory;
 
-import com.jds.architecture.service.dao.DAOConstants;
+import com.jds.apps.beans.SkillCategory;
 
 public class SkillCategoryAssembler {
 
@@ -28,7 +27,7 @@ public class SkillCategoryAssembler {
 		return skillsCtReturn;
 	}
 	
-	public static SkillCategoryAssembler getInfo(RowSet rs) throws SQLException {
+	public static SkillCategory getInfo(RowSet rs) throws SQLException {
 		SkillCategory skillsCtReturn = new SkillCategory();
 		skillsCtReturn.setCategoryId(rs.getString("id"));
 		skillsCtReturn.setCategoryName(rs.getString("name"));
