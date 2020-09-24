@@ -18,7 +18,7 @@ public class SkillDAO extends DAOConstants implements DataAccessObjectInterface 
 	DBAccess dbAcces;
 	Logger log;
 
-	protected SkillDAO() throws DBAccessException {
+	public SkillDAO() throws DBAccessException {
 		dbAcces = DBAccess.getDBAccess();
 	}
 

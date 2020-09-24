@@ -105,45 +105,30 @@ public class ProjectDAO implements DataAccessObjectInterface {
 
 	@Override
 	public RowSet find(Object obj) throws DAOException {
-		if (obj instanceof ProjectInfo && obj!=null) {
-			Connection conn;
-			String st="";
-			int f=0;
-			try {
-				CachedRowSet rs = RowSetProvider.newFactory().createCachedRowSet();
-				if (((ProjectInfo)obj).getId()!=null) {
-					f=1;
-					st=st.concat("id="+((ProjectInfo)obj).getId());
-				}
-				if(((ProjectInfo)obj).getName()!=null) {
-					if(f==1)
-						st=st.concat(" AND ");
-					f=1;
-					st=st.concat("name="+((ProjectInfo)obj).getName());
-				}
-				if(((ProjectInfo)obj).getDescription()!=null) {
-					if(f==1)
-						st=st.concat(" AND ");
-					f=1;
-					st=st.concat("description="+((ProjectInfo)obj).getDescription()); 
-				}
-				if (((ProjectInfo)obj).getStartDate()!=null) {
-					if(f==1)
-						st=st.concat(" AND ");
-					f=1;
-					st=st.concat("startDate=")
-				}
-				
-				conn = dbAccess.getConnection();
-				PreparedStatement ps = conn.prepareStatement(DAOConstants.PROJ_FIND_ALL);
-				
-			}catch (DBAccessException e) {
-				throw new DAOException("cause message key", e);
-			} catch (SQLException e) {
-				throw new DAOException("sql.find.exception.projdao", e);
-			}
-			
-		}else throw new DAOException("invalid.object.projdao", null);
+		/*
+		 * if (obj instanceof ProjectInfo && obj!=null) { Connection conn; String st="";
+		 * int f=0; try { CachedRowSet rs =
+		 * RowSetProvider.newFactory().createCachedRowSet(); if
+		 * (((ProjectInfo)obj).getId()!=null) { f=1;
+		 * st=st.concat("id="+((ProjectInfo)obj).getId()); }
+		 * if(((ProjectInfo)obj).getName()!=null) { if(f==1) st=st.concat(" AND "); f=1;
+		 * st=st.concat("name="+((ProjectInfo)obj).getName()); }
+		 * if(((ProjectInfo)obj).getDescription()!=null) { if(f==1)
+		 * st=st.concat(" AND "); f=1;
+		 * st=st.concat("description="+((ProjectInfo)obj).getDescription()); } if
+		 * (((ProjectInfo)obj).getStartDate()!=null) { if(f==1) st=st.concat(" AND ");
+		 * f=1; st=st.concat("startDate=") }
+		 * 
+		 * conn = dbAccess.getConnection(); PreparedStatement ps =
+		 * conn.prepareStatement(DAOConstants.PROJ_FIND_ALL);
+		 * 
+		 * }catch (DBAccessException e) { throw new DAOException("cause message key",
+		 * e); } catch (SQLException e) { throw new
+		 * DAOException("sql.find.exception.projdao", e); }
+		 * 
+		 * }else throw new DAOException("invalid.object.projdao", null);
+		 */
+		return null;
 	}
 
 	@Override
