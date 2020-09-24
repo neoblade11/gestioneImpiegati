@@ -5,9 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.RowSet;
-import com.jds.apps.beans.SkillCategory;
 
-import com.jds.architecture.service.dao.DAOConstants;
+import com.jds.apps.beans.SkillCategory;
 
 public class SkillCategoryAssembler {
 
