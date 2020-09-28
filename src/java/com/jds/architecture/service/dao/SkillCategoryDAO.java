@@ -21,7 +21,7 @@ public class SkillCategoryDAO extends DAOConstants implements DataAccessObjectIn
 	DBAccess dbAcces;
 	Logger log;
 
-	protected SkillCategoryDAO() throws DBAccessException {
+	public SkillCategoryDAO() throws DBAccessException {
 		dbAcces = DBAccess.getDBAccess();
 	}
 
@@ -34,7 +34,7 @@ public class SkillCategoryDAO extends DAOConstants implements DataAccessObjectIn
 				ps.setString(1, ((SkillCategory) obj).getCategoryId());
 				ps.setString(2, ((SkillCategory) obj).getCategoryName());
 				ps.setString(3, ((SkillCategory) obj).getCategoryDescription());
-				ps.setString(4, ((SkillCategory) obj).getStatus());
+				//ps.setString(4, ((SkillCategory) obj).getStatus());
 				ps.execute();
 			} catch (SQLException e) {
 				throw new DAOException("sql.create.exception.skillcategorydao", e);

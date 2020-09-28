@@ -121,7 +121,7 @@ public class SkillDAO extends DAOConstants implements DataAccessObjectInterface 
 				RowSet rs;
 				Connection conn;
 				conn = dbAcces.getConnection();
-				PreparedStatement ps = conn.prepareStatement(SKILL_FIND_BYPK);
+				PreparedStatement ps = conn.prepareStatement(SKILL_FIND_MAIN);
 				ps.setString(1, ((SkillsInformation) obj).getId());
 				ps.execute();
 
