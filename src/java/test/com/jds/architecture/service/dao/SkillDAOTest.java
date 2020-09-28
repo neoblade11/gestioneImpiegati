@@ -29,38 +29,33 @@ public class SkillDAOTest extends TestCase {
 	private static DBAccess dba;
 	private static PreparedStatement stmt;
 	private static CachedRowSet rowSet;
-
-	public void testsetUp() throws DAOException,ClassNotFoundException,IOException, DBAccessException{
-		
+	
+	@Override
+	public void setUp() throws DAOException,ClassNotFoundException,IOException, DBAccessException{
 		sa = new SkillAssembler();
-		
+		dba = DBAccess.getDBAccess();
+		conn = dba.getConnection();
+		skills = (SkillsInformation) new SkillsInformation();
+		skills.setSkillId("a1a2");
+		skills.setCategoryId("1081");
+		skills.setSkillName("ggghhhjjj");
+		skills.setSkillDescription("òlkjhgfdsaASDFGH");
+		skills.setStatus("APPROVED");
 	}
 
-	public void testCreate () throws DBAccessException, DAOException{
+	
+	public void testCreate () throws DBAccessException, DAOException, ClassNotFoundException, IOException{
 		try {
-			dba = DBAccess.getDBAccess();
-			conn = dba.getConnection();
-			skills = new SkillsInformation();
-			skills.setSkillId("a1a2");
-			skills.setCategoryId("1081");
-			skills.setSkillName("ggghhhjjj");
-			skills.setSkillDescription("òlkjhgfdsaASDFGH");
-			skills.setStatus("APPROVED");
 			SkillDAO sd = new SkillDAO();
 			System.out.println("SD creato");
-			rowSet = RowSetProvider.newFactory().createCachedRowSet();
-			rowSet.updateString(1, skills.getSkillId());
-			rowSet.updateString(2, skills.getCategoryId());
-			rowSet.updateString(3, skills.getSkillName());
-			rowSet.updateString(4, skills.getDescription());
-			rowSet.updateString(5, skills.getStatus());
-			//SkillAssembler.getInfo(rowSet);
-			sd.create(conn, SkillAssembler.getInfo(rowSet));
+			sd.create(conn, skills);
 			conn.commit();
-			System.out.println("test okk");
+			System.out.println("test ok");
 		}catch(SQLException sql) {
-			System.out.println("ErroreSQL");
+			throw new DAOException("sql.create.exception.skilldao", sql);
 		}
 	}
+	
+	
 
 }

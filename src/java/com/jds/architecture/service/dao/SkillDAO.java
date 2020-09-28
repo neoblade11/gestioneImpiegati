@@ -1,5 +1,6 @@
 package com.jds.architecture.service.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,12 +13,21 @@ import com.jds.apps.beans.SkillsInformation;
 import com.jds.architecture.Logger;
 import com.jds.architecture.service.dbaccess.DBAccess;
 import com.jds.architecture.service.dbaccess.DBAccessException;
+import com.jds.architecture.service.idgenerator.ProjectIdGenerator;
 
 public class SkillDAO extends DAOConstants implements DataAccessObjectInterface {
-
+	
+	private static SkillDAO istance;
+	
+	public static SkillDAO getIstance() throws DAOException,ClassNotFoundException,IOException, DBAccessException{
+		if (istance == null)
+			istance = new SkillDAO();
+		return istance;
+	}
+	
 	DBAccess dbAcces;
 	Logger log;
-
+	
 	public SkillDAO() throws DBAccessException {
 		dbAcces = DBAccess.getDBAccess();
 	}
@@ -28,11 +38,11 @@ public class SkillDAO extends DAOConstants implements DataAccessObjectInterface 
 			PreparedStatement ps;
 			try {
 				ps = conn.prepareStatement(SKILL_CREATE);
-				ps.setString(1, ((SkillsInformation) obj).getId());
+				ps.setString(1, ((SkillsInformation) obj).getSkillId());
 				ps.setString(2, ((SkillsInformation) obj).getCategoryId());
-				ps.setString(3, ((SkillsInformation) obj).getName());
-				ps.setString(4, ((SkillsInformation) obj).getDescription());
-				ps.setString(5, ((SkillsInformation) obj).getStatus());
+				ps.setString(3, ((SkillsInformation) obj).getSkillName());
+				ps.setString(4, ((SkillsInformation) obj).getSkillDescription());
+				//ps.setString(5, ((SkillsInformation) obj).getStatus());
 				ps.execute();			
 			} catch (SQLException e) {
 				throw new DAOException("sql.create.exception.skilldao", e);
