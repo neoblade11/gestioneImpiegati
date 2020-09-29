@@ -18,7 +18,7 @@ public class ProjectDAO implements DataAccessObjectInterface {
 	private DBAccess dbAccess;
 	private Logger Log;
 	
-	protected ProjectDAO() throws DAOException  {
+	public ProjectDAO() throws DAOException  {
 			try{
 				dbAccess=DBAccess.getDBAccess();
 			}catch (DBAccessException e) {
