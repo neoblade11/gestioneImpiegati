@@ -84,7 +84,6 @@ public class DAOConstants {
 			+ " VALUES ( ? , ? , ? ,  ? ,  ? , ? )";
 	protected static String PROJ_UPDATE_MAIN = "UPDATE project SET @ WHERE @ ";
 	protected static String PROJ_DELETE = "DELETE project WHERE id =  ? ";
-	protected static String PROJ_FIND_MAIN = "SELECT * FROM project WHERE @ ";
 	protected static String PROJ_FIND_BYPK = "SELECT * FROM project WHERE id =  ? ";
 	protected static String PROJ_FIND_ALL = "SELECT * FROM project";
 
